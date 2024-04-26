@@ -3,8 +3,6 @@ import AppLayout from "../components/layout/AppLayout";
 import { Box, Typography } from "@mui/material";
 import { grayColor } from "../constants/color";
 
-
-// home created successfully
 const Home = () => {
   return (
     <Box bgcolor={grayColor} height={"100%"}>
