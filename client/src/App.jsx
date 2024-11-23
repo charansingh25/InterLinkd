@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userExists, userNotExists } from "./redux/reducers/auth";
 import { Toaster } from "react-hot-toast";
 import { SocketProvider } from "./socket";
+import "./index.css";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
@@ -22,6 +23,8 @@ const ChatManagement = lazy(() => import("./pages/admin/ChatManagement"));
 const MessagesManagement = lazy(() =>
   import("./pages/admin/MessageManagement")
 );
+
+const Landing = lazy(() => import("./pages/landing"));
 
 const App = () => {
   const { user, loader } = useSelector((state) => state.auth);
@@ -41,6 +44,10 @@ const App = () => {
     <BrowserRouter>
       <Suspense fallback={<LayoutLoader />}>
         <Routes>
+          <Route path="/" element={<Landing />} /> {/* Update this */}  
+
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/signup" element={<SignUp />} /> */}
           <Route
             element={
               <SocketProvider>
@@ -48,7 +55,7 @@ const App = () => {
               </SocketProvider>
             }
           >
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} /> {/* Move Home to "/home" */}
             <Route path="/chat/:chatId" element={<Chat />} />
             <Route path="/groups" element={<Groups />} />
           </Route>

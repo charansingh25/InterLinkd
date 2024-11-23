@@ -1,24 +1,13 @@
 import { useFileHandler, useInputValidation } from "6pp";
-import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
-import {
-  Avatar,
-  Button,
-  Container,
-  IconButton,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { VisuallyHiddenInput } from "../components/styles/StyledComponents";
-import { bgGradient } from "../constants/color";
 import { server } from "../constants/config";
 import { userExists } from "../redux/reducers/auth";
 import { usernameValidator } from "../utils/validators";
+import userAvatar from "./../assets/avatar/user.png";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -57,6 +46,7 @@ const Login = () => {
         },
         config
       );
+      console.log("Dispatching userExists:", data.user);
       dispatch(userExists(data.user));
       toast.success(data.message, {
         id: toastId,
@@ -109,221 +99,109 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-
+  
   return (
-    <div
-      style={{
-        backgroundImage: bgGradient,
-      }}
-    >
-      <Container
-        component={"main"}
-        maxWidth="xs"
-        sx={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            padding: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+    <div className="bg-[#2f2f2f] min-h-screen flex items-center justify-center">
+      <div className="bg-[#212121] rounded-lg shadow-lg border-yellow-400 border-2 w-full max-w-md p-8">
+        <h1 className="text-2xl font-bold uppercase text-center text-yellow-400 mb-6">
+          {isLogin ? "Login" : "Sign Up"}
+        </h1>
+
+        <form
+          onSubmit={isLogin ? handleLogin : handleSignUp}
+          className="space-y-4"
         >
-          {isLogin ? (
+          {!isLogin && (
             <>
-              <Typography variant="h5">Login</Typography>
-              <form
-                style={{
-                  width: "100%",
-                  marginTop: "1rem",
-                }}
-                onSubmit={handleLogin}
-              >
-                <TextField
-                  required
-                  fullWidth
-                  label="Username"
-                  margin="normal"
-                  variant="outlined"
-                  value={username.value}
-                  onChange={username.changeHandler}
-                />
-
-                <TextField
-                  required
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  margin="normal"
-                  variant="outlined"
-                  value={password.value}
-                  onChange={password.changeHandler}
-                />
-
-                <Button
-                  sx={{
-                    marginTop: "1rem",
-                  }}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  fullWidth
-                  disabled={isLoading}
-                >
-                  Login
-                </Button>
-
-                <Typography textAlign={"center"} m={"1rem"}>
-                  OR
-                </Typography>
-
-                <Button
-                  disabled={isLoading}
-                  fullWidth
-                  variant="text"
-                  onClick={toggleLogin}
-                >
-                  Sign Up Instead
-                </Button>
-              </form>
-            </>
-          ) : (
-            <>
-              <Typography variant="h5">Sign Up</Typography>
-              <form
-                style={{
-                  width: "100%",
-                  marginTop: "1rem",
-                }}
-                onSubmit={handleSignUp}
-              >
-                <Stack position={"relative"} width={"10rem"} margin={"auto"}>
-                  <Avatar
-                    sx={{
-                      width: "10rem",
-                      height: "10rem",
-                      objectFit: "contain",
-                    }}
-                    src={avatar.preview}
+              {/* Avatar Upload */}
+              <div className="flex justify-center mb-4">
+                <div className="relative">
+                  <img
+                    src={avatar.preview || userAvatar}
+                    alt="Avatar"
+                    className="w-24 h-24 rounded-full object-cover"
                   />
+                  <label className="absolute bottom-0 right-0 bg-yellow-400 p-2 rounded-full cursor-pointer">
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={avatar.changeHandler}
+                    />
+                    <span className="text-black font-bold">+</span>
+                  </label>
+                </div>
+              </div>
 
-                  <IconButton
-                    sx={{
-                      position: "absolute",
-                      bottom: "0",
-                      right: "0",
-                      color: "white",
-                      bgcolor: "rgba(0,0,0,0.5)",
-                      ":hover": {
-                        bgcolor: "rgba(0,0,0,0.7)",
-                      },
-                    }}
-                    component="label"
-                  >
-                    <>
-                      <CameraAltIcon />
-                      <VisuallyHiddenInput
-                        type="file"
-                        onChange={avatar.changeHandler}
-                      />
-                    </>
-                  </IconButton>
-                </Stack>
+              {avatar.error && (
+                <p className="text-red-500 text-sm text-center">
+                  {avatar.error}
+                </p>
+              )}
 
-                {avatar.error && (
-                  <Typography
-                    m={"1rem auto"}
-                    width={"fit-content"}
-                    display={"block"}
-                    color="error"
-                    variant="caption"
-                  >
-                    {avatar.error}
-                  </Typography>
-                )}
+              {/* Name Field */}
+              <input
+                type="text"
+                placeholder="Name"
+                value={name.value}
+                onChange={name.changeHandler}
+                className="w-full px-4 py-2 text-sm rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-yellow-400"
+                required
+              />
 
-                <TextField
-                  required
-                  fullWidth
-                  label="Name"
-                  margin="normal"
-                  variant="outlined"
-                  value={name.value}
-                  onChange={name.changeHandler}
-                />
-
-                <TextField
-                  required
-                  fullWidth
-                  label="Bio"
-                  margin="normal"
-                  variant="outlined"
-                  value={bio.value}
-                  onChange={bio.changeHandler}
-                />
-                <TextField
-                  required
-                  fullWidth
-                  label="Username"
-                  margin="normal"
-                  variant="outlined"
-                  value={username.value}
-                  onChange={username.changeHandler}
-                />
-
-                {username.error && (
-                  <Typography color="error" variant="caption">
-                    {username.error}
-                  </Typography>
-                )}
-
-                <TextField
-                  required
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  margin="normal"
-                  variant="outlined"
-                  value={password.value}
-                  onChange={password.changeHandler}
-                />
-
-                <Button
-                  sx={{
-                    marginTop: "1rem",
-                  }}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  fullWidth
-                  disabled={isLoading}
-                >
-                  Sign Up
-                </Button>
-
-                <Typography textAlign={"center"} m={"1rem"}>
-                  OR
-                </Typography>
-
-                <Button
-                  disabled={isLoading}
-                  fullWidth
-                  variant="text"
-                  onClick={toggleLogin}
-                >
-                  Login Instead
-                </Button>
-              </form>
+              {/* Bio Field */}
+              <textarea
+                placeholder="Bio"
+                value={bio.value}
+                onChange={bio.changeHandler}
+                className="w-full px-4 py-2 text-sm rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-yellow-400"
+                rows={3}
+                required
+              />
             </>
           )}
-        </Paper>
-      </Container>
+
+          {/* Username Field */}
+          <input
+            type="text"
+            placeholder="Username"
+            value={username.value}
+            onChange={username.changeHandler}
+            className="w-full px-4 py-2 text-sm rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-yellow-400"
+            required
+          />
+          {username.error && (
+            <p className="text-red-500 text-sm">{username.error}</p>
+          )}
+
+          {/* Password Field */}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password.value}
+            onChange={password.changeHandler}
+            className="w-full px-4 py-2 text-sm rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-yellow-400"
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-400 text-black font-bold py-2 rounded-lg hover:bg-yellow-500 transition disabled:opacity-50"
+            disabled={isLoading}
+          >
+            {isLogin ? "Login" : "Sign Up"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={toggleLogin}
+            className="text-yellow-400 hover:underline"
+          >
+            {isLogin ? "Sign Up Instead" : "Login Instead"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
