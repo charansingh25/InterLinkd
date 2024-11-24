@@ -13,7 +13,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     userExists: (state, action) => {
-      console.log("Reducer triggered with payload:", action.payload);
       state.user = action.payload;
       state.loader = false;
     },
@@ -54,5 +53,7 @@ const authSlice = createSlice({
   },
 });
 
-export default authSlice;
+
 export const { userExists, userNotExists } = authSlice.actions;
+export default authSlice;
+

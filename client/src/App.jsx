@@ -38,6 +38,7 @@ const App = () => {
       .catch((err) => dispatch(userNotExists()));
   }, [dispatch]);
 
+
   return loader ? (
     <LayoutLoader />
   ) : (
@@ -60,14 +61,14 @@ const App = () => {
             <Route path="/groups" element={<Groups />} />
           </Route>
 
-          <Route
+          {/* <Route
             path="/login"
             element={
-              <ProtectRoute user={!user} redirect="/">
+              <ProtectRoute user={user} redirect="/">
                 <Login />
               </ProtectRoute>
             }
-          />
+          /> */}
 
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />

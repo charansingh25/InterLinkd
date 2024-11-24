@@ -16,11 +16,14 @@ const VisuallyHiddenInput = styled("input")({
 
 const Link = styled(LinkComponent)`
   text-decoration: none;
+  font: bold;
   color: black;
   padding: 1rem;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(230, 192, 28, 1);
   }
+  &:focus {
+    background-color: rgba(230, 192, 28, 1);
 `;
 
 const InputBox = styled("input")`
@@ -30,7 +33,9 @@ const InputBox = styled("input")`
   outline: none;
   padding: 0 3rem;
   border-radius: 1.5rem;
+  color: white;
   background-color: ${grayColor};
+  border: 1px solid white;
 `;
 
 const SearchField = styled("input")`

@@ -74,87 +74,86 @@ const Header = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }} height={"4rem"}>
-        <AppBar
-          position="static"
-          sx={{
-            bgcolor: orange,
-          }}
+      <div className="flex items-center bg-[#2f2f2f] h-16 shadow-md border-b-2 border-yellow-300">
+        <div className="hidden tracking-widest sm:block text-yellow-300 font-bold text-3xl px-4">
+          InterLinkd
+        </div>
+
+        <button
+          className="block sm:hidden text-white px-4"
+          onClick={handleMobile}
         >
-          <Toolbar>
-            <Typography
-              variant="h6"
-              sx={{
-                display: { xs: "none", sm: "block" },
-              }}
-            >
-              InterLinkd
-            </Typography>
+          <MenuIcon />
+        </button>
 
-            <Box
-              sx={{
-                display: { xs: "block", sm: "none" },
-              }}
-            >
-              <IconButton color="inherit" onClick={handleMobile}>
-                <MenuIcon />
-              </IconButton>
-            </Box>
-            <Box
-              sx={{
-                flexGrow: 1,
-              }}
-            />
-            <Box>
-              <IconBtn
-                title={"Search"}
-                icon={<SearchIcon />}
-                onClick={openSearch}
-              />
+        <div className="flex-grow" />
 
-              <IconBtn
-                title={"New Group"}
-                icon={<AddIcon />}
-                onClick={openNewGroup}
-              />
+        <div className="flex space-x-4 px-4">
+          <IconBtn
+            title={"Search"}
+            icon={<SearchIcon />}
+            onClick={openSearch}
+          />
 
-              <IconBtn
-                title={"Manage Groups"}
-                icon={<GroupIcon />}
-                onClick={navigateToGroup}
-              />
+          <IconBtn
+            title={"New Group"}
+            icon={<AddIcon />}
+            onClick={openNewGroup}
+          />
 
-              <IconBtn
-                title={"Notifications"}
-                icon={<NotificationsIcon />}
-                onClick={openNotification}
-                value={notificationCount}
-              />
+          <IconBtn
+            title={"Manage Groups"}
+            icon={<GroupIcon />}
+            onClick={navigateToGroup}
+          />
 
-              <IconBtn
-                title={"Logout"}
-                icon={<LogoutIcon />}
-                onClick={logoutHandler}
-              />
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box>
+          <IconBtn
+            title={"Notifications"}
+            icon={<NotificationsIcon />}
+            onClick={openNotification}
+            value={notificationCount}
+          />
+
+          <IconBtn
+            title={"Logout"}
+            icon={<LogoutIcon />}
+            onClick={logoutHandler}
+          />
+        </div>
+      </div>
 
       {isSearch && (
-        <Suspense fallback={<Backdrop open />}>
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+              Loading...
+            </div>
+          }
+        >
           <SearchDialog />
         </Suspense>
       )}
 
       {isNotification && (
-        <Suspense fallback={<Backdrop open />}>
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+              Loading...
+            </div>
+          }
+        >
           <NotifcationDialog />
         </Suspense>
       )}
 
       {isNewGroup && (
-        <Suspense fallback={<Backdrop open />}>
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+              Loading...
+            </div>
+          }
+        >
           <NewGroupDialog />
         </Suspense>
       )}
@@ -164,18 +163,22 @@ const Header = () => {
 
 const IconBtn = ({ title, icon, onClick, value }) => {
   return (
-    <Tooltip title={title}>
-      <IconButton color="inherit" size="large" onClick={onClick}>
+    <div className="relative group">
+      <button
+        className="text-yellow-400 hover:bg-yellow-400 hover:text-black rounded-full p-2"
+        onClick={onClick}
+        title={title}
+      >
         {value ? (
-          <Badge badgeContent={value} color="error">
+          <span className="relative inline-block">
             {icon}
-          </Badge>
+            <span className="absolute top-0 right-0 block h-2 w-2 transform translate-x-1/2 -translate-y-1/2 bg-yellow-400 rounded-full"></span>
+          </span>
         ) : (
           icon
         )}
-      </IconButton>
-    </Tooltip>
+      </button>
+    </div>
   );
 };
-
 export default Header;

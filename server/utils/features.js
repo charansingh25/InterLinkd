@@ -12,7 +12,7 @@ const cookieOptions = {
 };
 
 const connectDB = (uri) => {
-  console.log(uri);
+  // console.log(uri);
   mongoose
     .connect(uri, { dbName: "mine-chat" })
     .then((data) => console.log(`Connected to DB: ${data.connection.host}`))
@@ -29,6 +29,7 @@ const sendToken = (res, user, code, message) => {
     user,
     message,
   });
+
 };
 
 const emitEvent = (req, event, users, data) => {

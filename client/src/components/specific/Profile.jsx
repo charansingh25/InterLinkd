@@ -10,50 +10,41 @@ import { transformImage } from "../../lib/features";
 
 const Profile = ({ user }) => {
   return (
-    <Stack spacing={"2rem"} direction={"column"} alignItems={"center"}>
-      <Avatar
+    <div className="flex flex-col items-center bg-gray-900 p-8 rounded-xl shadow-lg border-yellow-300 border-2 w-full max-w-sm mx-auto ">
+      {/* Avatar */}
+      <img
         src={transformImage(user?.avatar?.url)}
-        sx={{
-          width: 200,
-          height: 200,
-          objectFit: "contain",
-          marginBottom: "1rem",
-          border: "5px solid white",
-        }}
+        alt="Profile"
+        className="w-32 h-32 object-cover rounded-full border-4 border-white mb-6"
       />
-      <ProfileCard heading={"Bio"} text={user?.bio} />
-      <ProfileCard
-        heading={"Username"}
-        text={user?.username}
-        Icon={<UserNameIcon />}
-      />
-      <ProfileCard heading={"Name"} text={user?.name} Icon={<FaceIcon />} />
-      <ProfileCard
-        heading={"Joined"}
-        text={moment(user?.createdAt).fromNow()}
-        Icon={<CalendarIcon />}
-      />
-    </Stack>
+
+      {/* Name */}
+      <div className="text-center mb-4">
+        <p className="text-2xl font-semibold text-white">{user?.name}</p>
+      </div>
+
+      {/* Username Block */}
+      <div className="w-full mb-4">
+        <div className="bg-gray-800 text-center py-2 px-4 rounded-lg">
+          <p className="text-lg text-gray-300">@{user?.username}</p>
+        </div>
+      </div>
+
+      {/* Bio Block */}
+      <div className="w-full mb-4">
+        <div className="bg-gray-800 text-center py-2 px-4 rounded-lg">
+          <p className="text-base text-gray-300">{user?.bio || "No bio available"}</p>
+        </div>
+      </div>
+
+      {/* Joined Date Block */}
+      <div className="w-full">
+        <div className="bg-gray-800 text-center py-2 px-4 rounded-lg">
+          <p className="text-base text-gray-300">Joined {moment(user?.createdAt).fromNow()}</p>
+        </div>
+      </div>
+    </div>
   );
 };
-
-const ProfileCard = ({ text, Icon, heading }) => (
-  <Stack
-    direction={"row"}
-    alignItems={"center"}
-    spacing={"1rem"}
-    color={"white"}
-    textAlign={"center"}
-  >
-    {Icon && Icon}
-
-    <Stack>
-      <Typography variant="body1">{text}</Typography>
-      <Typography color={"gray"} variant="caption">
-        {heading}
-      </Typography>
-    </Stack>
-  </Stack>
-);
 
 export default Profile;

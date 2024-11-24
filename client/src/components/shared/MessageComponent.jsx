@@ -17,47 +17,49 @@ const MessageComponent = ({ message, user }) => {
     <motion.div
       initial={{ opacity: 0, x: "-100%" }}
       whileInView={{ opacity: 1, x: 0 }}
-      style={{
-        alignSelf: sameSender ? "flex-end" : "flex-start",
-        backgroundColor: "white",
-        color: "black",
-        borderRadius: "5px",
-        padding: "0.5rem",
-        width: "fit-content",
-      }}
+      className="flex flex-col w-full mb-4"
     >
-      {!sameSender && (
-        <Typography color={lightBlue} fontWeight={"600"} variant="caption">
-          {sender.name}
-        </Typography>
-      )}
+      {/* Message Container */}
+      <div
+        className={`${
+          sameSender
+            ? "self-end bg-gray-900 text-white"
+            : "self-start bg-gray-800 text-yellow-400"
+        } rounded-lg p-2 max-w-max w-fit`}
+      >
+        {/* Sender Name */}
+        {!sameSender && (
+          <div className="text-blue-400 font-semibold text-xs">
+            {sender.name}
+          </div>
+        )}
 
-      {content && <Typography>{content}</Typography>}
+        {/* Message Content */}
+        {content && <div className="text-sm mt-1">{content}</div>}
 
-      {attachments.length > 0 &&
-        attachments.map((attachment, index) => {
-          const url = attachment.url;
-          const file = fileFormat(url);
+        {/* Attachments */}
+        {attachments.length > 0 &&
+          attachments.map((attachment, index) => {
+            const url = attachment.url;
+            const file = fileFormat(url);
 
-          return (
-            <Box key={index}>
-              <a
-                href={url}
-                target="_blank"
-                download
-                style={{
-                  color: "black",
-                }}
-              >
-                {RenderAttachment(file, url)}
-              </a>
-            </Box>
-          );
-        })}
+            return (
+              <div key={index} className="mt-2">
+                <a
+                  href={url}
+                  target="_blank"
+                  download
+                  className="text-black hover:underline"
+                >
+                  {RenderAttachment(file, url)}
+                </a>
+              </div>
+            );
+          })}
 
-      <Typography variant="caption" color={"text.secondary"}>
-        {timeAgo}
-      </Typography>
+        {/* Time Ago */}
+        <div className="text-xs text-gray-500 mt-1">{timeAgo}</div>
+      </div>
     </motion.div>
   );
 };

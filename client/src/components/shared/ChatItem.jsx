@@ -17,25 +17,17 @@ const ChatItem = ({
 }) => {
   return (
     <Link
-      sx={{
-        padding: "0",
-      }}
+      className="relative p-0"
       to={`/chat/${_id}`}
       onContextMenu={(e) => handleDeleteChat(e, _id, groupChat)}
     >
       <motion.div
-        initial={{ opacity: 0, y: "-100%" }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         transition={{ delay: 0.1 * index }}
-        style={{
-          display: "flex",
-          gap: "1rem",
-          alignItems: "center",
-          backgroundColor: sameSender ? "black" : "unset",
-          color: sameSender ? "white" : "unset",
-          position: "relative",
-          padding: "1rem",
-        }}
+        className={`flex gap-4 items-center p-4 text-2xl ${
+          sameSender ? "text-black" : "bg-transparent text-white font-bold"
+        }`}
       >
         <AvatarCard avatar={avatar} />
 
@@ -48,16 +40,7 @@ const ChatItem = ({
 
         {isOnline && (
           <Box
-            sx={{
-              width: "10px",
-              height: "10px",
-              borderRadius: "50%",
-              backgroundColor: "green",
-              position: "absolute",
-              top: "50%",
-              right: "1rem",
-              transform: "translateY(-50%)",
-            }}
+            className="w-2.5 h-2.5 rounded-full bg-green-500 absolute top-1/2 right-4 transform -translate-y-1/2"
           />
         )}
       </motion.div>

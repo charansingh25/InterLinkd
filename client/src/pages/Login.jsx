@@ -8,6 +8,7 @@ import { server } from "../constants/config";
 import { userExists } from "../redux/reducers/auth";
 import { usernameValidator } from "../utils/validators";
 import userAvatar from "./../assets/avatar/user.png";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -23,6 +24,7 @@ const Login = () => {
   const avatar = useFileHandler("single");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -48,6 +50,7 @@ const Login = () => {
       );
       console.log("Dispatching userExists:", data.user);
       dispatch(userExists(data.user));
+      navigate("/home");
       toast.success(data.message, {
         id: toastId,
       });
@@ -91,6 +94,7 @@ const Login = () => {
       toast.success(data.message, {
         id: toastId,
       });
+      navigate("/home");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something Went Wrong", {
         id: toastId,

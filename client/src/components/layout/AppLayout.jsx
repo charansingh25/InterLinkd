@@ -100,32 +100,38 @@ const AppLayout = () => (WrappedComponent) => {
         />
 
         {isLoading ? (
-          <Skeleton />
+          <div className="animate-pulse p-4">
+            <div className="bg-gray-300 h-10 w-full rounded"></div>
+          </div>
         ) : (
-          <Drawer open={isMobile} onClose={handleMobileClose}>
+          <div
+            className={`fixed inset-y-0 left-0 bg-white transform ${
+              isMobile ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-300 z-50`}
+          >
             <ChatList
-              w="70vw"
+              w="w-4/5"
               chats={data?.chats}
               chatId={chatId}
               handleDeleteChat={handleDeleteChat}
               newMessagesAlert={newMessagesAlert}
               onlineUsers={onlineUsers}
             />
-          </Drawer>
+            <button
+              className="absolute top-4 right-4 text-black text-lg"
+              onClick={handleMobileClose}
+            >
+              ×
+            </button>
+          </div>
         )}
 
-        <Grid container height={"calc(100vh - 4rem)"}>
-          <Grid
-            item
-            sm={4}
-            md={3}
-            sx={{
-              display: { xs: "none", sm: "block" },
-            }}
-            height={"100%"}
-          >
+        <div className="flex h-[calc(100vh-4rem)]">
+          <div className="hidden sm:block w-3/12 h-full bg-[#2f2f2f] border-r-2 border-yellow-300">
             {isLoading ? (
-              <Skeleton />
+              <div className="animate-pulse p-4">
+                <div className="bg-gray-800 h-10 w-full rounded"></div>
+              </div>
             ) : (
               <ChatList
                 chats={data?.chats}
@@ -135,28 +141,20 @@ const AppLayout = () => (WrappedComponent) => {
                 onlineUsers={onlineUsers}
               />
             )}
-          </Grid>
-          <Grid item xs={12} sm={8} md={5} lg={6} height={"100%"}>
-            <WrappedComponent {...props} chatId={chatId} user={user} />
-          </Grid>
+          </div>
 
-          <Grid
-            item
-            md={4}
-            lg={3}
-            height={"100%"}
-            sx={{
-              display: { xs: "none", md: "block" },
-              padding: "2rem",
-              bgcolor: "rgba(0,0,0,0.85)",
-            }}
-          >
+          <div className="w-full sm:w-2/3 md:w-1/2 h-full bg-black/85">
+            <WrappedComponent {...props} chatId={chatId} user={user} />
+          </div>
+
+          <div className="hidden md:block w-3/12 h-full p-8 bg-[#2f2f2f] text-white border-l-2 border-yellow-300">
             <Profile user={user} />
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </>
     );
   };
 };
+
 
 export default AppLayout;
